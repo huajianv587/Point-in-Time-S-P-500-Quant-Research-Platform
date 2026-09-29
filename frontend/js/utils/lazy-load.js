@@ -410,7 +410,8 @@ export function initPerformanceOptimizations() {
   });
 
   // Monitor long tasks in development
-  if (process.env.NODE_ENV === 'development') {
+  const isDevelopment = globalThis.process?.env?.NODE_ENV === 'development';
+  if (isDevelopment) {
     monitorLongTasks((task) => {
       console.warn('[Long Task]', task);
     });

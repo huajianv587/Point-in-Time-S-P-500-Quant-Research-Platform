@@ -44,7 +44,7 @@ function buildShell() {
         <div class="run-panel__body">
           <div class="form-group">
             <label class="form-label">Strategy Name</label>
-            <input class="form-input" id="v-strategy" value="ESG Multi-Factor Long-Only">
+            <input class="form-input" id="v-strategy" value="S&P 500 Multi-Factor Long-Only">
           </div>
           <div class="form-group">
             <label class="form-label">Universe</label>

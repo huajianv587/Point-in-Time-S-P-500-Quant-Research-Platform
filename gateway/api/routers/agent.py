@@ -13,7 +13,7 @@ router = APIRouter()
 
 
 @router.post("/session")
-def new_session(session_id: str, user_id: str | None = None):
+def new_session(session_id: str, user_id: Optional[str] = None):
     if runtime.create_session is None:
         raise HTTPException(status_code=503, detail="Database module not available")
     runtime.create_session(session_id=session_id, user_id=user_id)

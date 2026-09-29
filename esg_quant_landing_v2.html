@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ESG Quant IO — 研究到执行，一套闭环</title>
+  <title>Private S&P 500 Quant — 研究到执行，一套闭环</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -49,16 +49,7 @@
       transition: width .18s, height .18s;
       will-change: left, top;
     }
-    #cur-ring {
-      position: fixed; width: 30px; height: 30px;
-      border: 1.5px solid rgba(0,255,136,.55); border-radius: 50%;
-      pointer-events: none; z-index: 9998;
-      transform: translate(-50%,-50%);
-      transition: width .28s, height .28s, border-color .25s;
-      will-change: left, top;
-    }
     body.hov #cur-dot { width: 8px; height: 8px; }
-    body.hov #cur-ring { width: 52px; height: 52px; border-color: var(--green); }
 
     /* ── NAV ───────────────────────── */
     nav {
@@ -407,14 +398,13 @@
 
 <!-- Cursor -->
 <div id="cur-dot"></div>
-<div id="cur-ring"></div>
 
 <!-- NAV -->
 <nav id="nav">
   <div class="nav-logo">
     <div class="nav-badge">EQ</div>
     <div class="nav-brand">
-      <span class="nav-name">ESG Quant IO</span>
+      <span class="nav-name">Private S&amp;P 500 Quant</span>
       <span class="nav-sub">RESEARCH TO EXECUTION</span>
     </div>
   </div>
@@ -430,13 +420,13 @@
 <section id="s-hero">
   <canvas id="hero-canvas"></canvas>
   <div class="hero-inner">
-    <span class="hero-micro">ESG · QUANT · AI · SINGAPORE</span>
+    <span class="hero-micro">S&amp;P 500 · MULTI-FACTOR · AI · PRIVATE</span>
     <div class="hero-hl">
       <span class="hl hl-1">研究。验证。</span>
       <span class="hl hl-2">执行。</span>
       <span class="hl hl-3">一套系统，全程闭环。</span>
     </div>
-    <p class="hero-sub">机构级量化策略 · ESG原生 · AI驱动 · 为下一代系统性投资者而建</p>
+    <p class="hero-sub">个人研究宇宙 · 多因子分析 · Agent 驱动 · 为系统性投资决策而建</p>
     <div class="hero-btns">
       <a class="btn-pri" href="/app/#/dashboard" id="hero-app-entry" data-app-entry="dashboard">进入控制台 →</a>
       <a class="btn-ghost" href="#s-product" id="hero-demo-link">查看演示</a>
@@ -470,7 +460,7 @@
       </li>
       <li class="cap-item">
         <span class="cap-icon">🧬</span>
-        <span class="cap-txt"><span class="cap-name">ESG 因子引擎</span> — 多因子评分直接入模</span>
+        <span class="cap-txt"><span class="cap-name">多因子研究引擎</span> — 价值、质量、动量、风险与 ESG 可组合入模</span>
       </li>
       <li class="cap-item">
         <span class="cap-icon">📊</span>
@@ -478,14 +468,14 @@
       </li>
       <li class="cap-item">
         <span class="cap-icon">🤖</span>
-        <span class="cap-txt"><span class="cap-name">RAG Copilot</span> — ESG 报告对话，研究链路打通</span>
+        <span class="cap-txt"><span class="cap-name">Research Agent</span> — 将数据、证据、因子与风险解释串成决策链</span>
       </li>
     </ul>
   </div>
   <div class="prod-right">
     <div class="dash-card" id="dash-card">
       <div class="dash-topbar">
-        <span class="dash-logo">ESG QUANT IO</span>
+        <span class="dash-logo">PRIVATE S&amp;P 500 QUANT</span>
         <div class="dash-dots">
           <div class="dash-dot dot-r"></div>
           <div class="dash-dot dot-y"></div>
@@ -553,18 +543,18 @@
   <div class="cta-inner">
     <span class="cta-proof">— 已有 2,800+ 量化研究者在使用 —</span>
     <h2 class="cta-hl">准备好交易得更聪明了吗？</h2>
-    <p class="cta-sub">免费开始。无需信用卡。ESG数据已内置。</p>
+    <p class="cta-sub">本地优先。数据源可插拔。研究结果可追溯。</p>
     <a class="btn-mega" href="/app/#/dashboard" id="cta-free-start" data-app-entry="dashboard">立即免费开始 →</a>
     <div class="trust-micro">
       <span>✓ 永久免费层</span>
       <span class="tsep">·</span>
       <span>✓ 无需API密钥即可启动</span>
       <span class="tsep">·</span>
-      <span>✓ ESG数据已内置</span>
+      <span>✓ S&amp;P 500 宇宙可导入</span>
     </div>
   </div>
   <div class="cta-foot">
-    © 2026 ESG Quant IO · Singapore · <a href="#">Privacy</a> · <a href="#">Terms</a>
+    © 2026 Private S&amp;P 500 Quant · Singapore · <a href="#">Privacy</a> · <a href="#">Terms</a>
   </div>
 </section>
 
@@ -573,15 +563,11 @@
    CURSOR
 ═══════════════════════════════════════════════════════ */
 const dot  = document.getElementById('cur-dot');
-const ring = document.getElementById('cur-ring');
-let mx=0, my=0, rx=0, ry=0;
+let mx=0, my=0;
 
 document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
 (function curLoop() {
-  rx += (mx - rx) * 0.1;
-  ry += (my - ry) * 0.1;
   dot.style.left  = mx + 'px'; dot.style.top  = my + 'px';
-  ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
   requestAnimationFrame(curLoop);
 })();
 document.querySelectorAll('a,button').forEach(el => {

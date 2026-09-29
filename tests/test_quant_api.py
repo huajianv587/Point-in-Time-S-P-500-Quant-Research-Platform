@@ -50,7 +50,7 @@ def test_quant_platform_overview_is_available():
 
     assert response.status_code == 200
     data = response.json()
-    assert data["platform_name"] == "ESG Quant Intelligence System"
+    assert data["platform_name"] == "Private S&P 500 Quant Research Platform"
     assert data["storage"]["mode"] in {"local_fallback", "hybrid_cloud"}
     assert data["top_signals"]
     assert data["watchlist_signals"]
@@ -174,7 +174,7 @@ def test_platform_overview_watchlist_projection_respects_signed_decision(monkeyp
         )
     ]
 
-    monkeypatch.setattr(service, "_build_signals", lambda *args, **kwargs: signals)
+    monkeypatch.setattr(service, "_build_signal_bundle", lambda *args, **kwargs: (signals, {}))
     monkeypatch.setattr(
         service,
         "_build_portfolio",

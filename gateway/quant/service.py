@@ -50,6 +50,7 @@ from gateway.quant.p2_decision import P2_STRATEGY_PROFILES, P2DecisionStackRunti
 from gateway.scheduler.event_classifier_runtime import get_event_classifier_runtime
 from gateway.quant.signals import MovingAverageCrossSignalEngine
 from gateway.quant.storage import QuantStorageGateway
+from gateway.quant.universe import UniverseLoadResult, load_sp500_universe
 from gateway.utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -91,7 +92,11 @@ class QuantSystemService:
         self.p2_stack = P2DecisionStackRuntime()
         self.default_capital = float(getattr(settings, "QUANT_DEFAULT_CAPITAL", 1_000_000))
         self.default_benchmark = getattr(settings, "QUANT_DEFAULT_BENCHMARK", "SPY")
-        self.default_universe_name = getattr(settings, "QUANT_DEFAULT_UNIVERSE", "ESG_US_LARGE_CAP")
+        self.default_universe_name = getattr(settings, "QUANT_DEFAULT_UNIVERSE", "SP500")
+        self._universe_snapshot: UniverseLoadResult = load_sp500_universe(
+            getattr(settings, "SP500_CONSTITUENTS_PATH", None),
+            self._market_surface_catalog(),
+        )
         self.default_broker = getattr(settings, "QUANT_BROKER_DEFAULT", "alpaca")
         self._overview_cache: dict[str, Any] | None = None
         self._watchlist_snapshot_cache: dict[str, Any] | None = None
@@ -593,7 +598,7 @@ class QuantSystemService:
         return _as_dict(enriched)
 
     def get_default_universe(self, symbols: list[str] | None = None) -> list[UniverseMember]:
-        base_universe = [UniverseMember(**item) for item in self._market_surface_catalog()]
+        base_universe = [UniverseMember(**item) for item in self._universe_snapshot.members]
         if not symbols:
             return base_universe
 
@@ -614,6 +619,19 @@ class QuantSystemService:
                 )
             )
         return selected
+
+    def default_universe_status(self) -> dict[str, Any]:
+        snapshot = self._universe_snapshot
+        return {
+            "name": self.default_universe_name,
+            "member_count": len(snapshot.members),
+            "source": snapshot.source,
+            "path": snapshot.path,
+            "as_of_date": snapshot.as_of_date,
+            "complete": snapshot.complete,
+            "warnings": list(snapshot.warnings),
+            "research_ready": snapshot.complete,
+        }
 
     @staticmethod
     def _preferred_watchlist(scope: str = "full") -> list[str]:
@@ -756,12 +774,12 @@ class QuantSystemService:
 
         payload = {
             "generated_at": _iso_now(),
-            "platform_name": "ESG Quant Intelligence System",
-            "tagline": "从数据接入到因子研究、回测执行与产品交付的一体化 ESG Quant 平台",
+            "platform_name": "Private S&P 500 Quant Research Platform",
+            "tagline": "以 S&P 500 为研究宇宙，贯通数据、因子、Agent、风险、回测与 Paper Trading",
             "architecture_layers": [
-                ArchitectureLayerStatus(key="l0", label="数据接入层", priority="P1", ready=True, detail="支持市场、宏观、ESG、另类数据入口").model_dump(),
+                ArchitectureLayerStatus(key="l0", label="数据接入层", priority="P1", ready=True, detail="支持 S&P 500 行情、基本面、宏观、新闻、另类数据和可选 ESG 入口").model_dump(),
                 ArchitectureLayerStatus(key="l1", label="数据治理层", priority="P1", ready=True, detail="时间对齐、异常值过滤、可复现实验元数据").model_dump(),
-                ArchitectureLayerStatus(key="l2", label="分析引擎层", priority="P1", ready=True, detail="技术指标、ESG 因子、LLM 财报解析和另类数据信号").model_dump(),
+                ArchitectureLayerStatus(key="l2", label="分析引擎层", priority="P1", ready=True, detail="基本面、价值、质量、动量、波动率、情绪、事件和 ESG 因子").model_dump(),
                 ArchitectureLayerStatus(key="l3", label="模型训练层", priority="P2", ready=True, detail="支持 XGBoost/LSTM/LoRA 和云端 5090 微调规划").model_dump(),
                 ArchitectureLayerStatus(key="l4", label="Agent 编排层", priority="P1", ready=True, detail="研究、策略、风控、事件、报告多 Agent 协同").model_dump(),
                 ArchitectureLayerStatus(key="l5", label="风控合规层", priority="P2", ready=True, detail="回撤、CVaR、情景压力测试和合规规则").model_dump(),
@@ -781,6 +799,7 @@ class QuantSystemService:
                 "name": self.default_universe_name,
                 "size": len(universe),
                 "benchmark": self.default_benchmark,
+                "status": self.default_universe_status(),
                 "coverage": [member.symbol for member in universe],
             },
             "top_signals": watchlist_signals[:5],
@@ -940,7 +959,7 @@ class QuantSystemService:
         watchlist = list(snapshot.get("watchlist_signals") or [])
         signals = list(snapshot.get("signals") or [])
         account_snapshot = snapshot.get("live_account_snapshot") or {}
-        account = account_snapshot.get("account") if isinstance(account_snapshot, dict) else {}
+        account = (account_snapshot.get("account") or {}) if isinstance(account_snapshot, dict) else {}
         latest_backtest = {}
         backtests = self.storage.list_records("backtests")
         if backtests:
@@ -1503,13 +1522,13 @@ class QuantSystemService:
                 "data_sources": True,
             },
             "narrative": {
-                "headline": "ESG Quant Command Center。",
-                "subheadline": "将数据、研究、信号、回测、执行和产品交付收束为一个可运行的量化平台。",
-                "summary": "当前旗舰页展示的是 ESG Quant 平台的实时骨架，而不是单点 ESG 问答。你可以从这里进入研究、组合、回测、执行和报告链路。",
+                "headline": "S&P 500 Quant Command Center。",
+                "subheadline": "将 S&P 500 数据、因子研究、Agent 决策、风险、回测和 Paper Trading 收束为一个私人量化平台。",
+                "summary": "当前旗舰页展示的是完整量化研究与决策骨架；ESG 只是可选因子之一，不是平台边界。",
             },
             "spotlight": {
                 "company": top_signal["company_name"],
-                "title": f"{top_signal['company_name']} 当前位于多因子与 ESG 叠加信号前列",
+                "title": f"{top_signal['company_name']} 当前位于多因子信号前列",
                 "description": top_signal["thesis"],
                 "event_type": "RESEARCH_SIGNAL",
                 "source": "quant-engine",
@@ -1529,9 +1548,9 @@ class QuantSystemService:
             ],
             "query_interface": {
                 "hot_questions": [
-                    "运行默认 ESG Quant 研究流程",
-                    "对 AAPL/MSFT/TSLA 生成多因子与 ESG 组合建议",
-                    "回测 ESG Multi-Factor Long-Only 策略",
+                    "运行默认 S&P 500 多因子研究流程",
+                    "对 AAPL/MSFT/TSLA 生成多因子组合建议",
+                    "回测 S&P 500 Multi-Factor Long-Only 策略",
                     "生成 Paper Trading 执行清单",
                 ]
             },
@@ -1788,7 +1807,7 @@ class QuantSystemService:
         record = {
             "research_id": f"research-{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}",
             "created_at": _iso_now(),
-            "question": research_question or "Run default ESG quant research",
+            "question": research_question or "Run default S&P 500 multi-factor research",
             "benchmark": benchmark,
             "horizon_days": horizon_days,
             "universe": [_as_dict(member) for member in universe],

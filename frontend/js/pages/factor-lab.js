@@ -51,7 +51,7 @@ const COPY = {
     horizon: 'Horizon Days',
     universe: 'Universe',
     query: 'Discovery Question',
-    queryValue: 'Find ESG, event, novelty, and risk factors with evidence-linked lineage.',
+    queryValue: 'Find value, quality, momentum, volatility, sentiment, macro, event, and ESG factors with evidence-linked lineage.',
     minIc: 'Min |IC|',
     discover: 'Discover Factors',
     cards: 'Top Factor Cards',
@@ -99,7 +99,7 @@ const COPY = {
     horizon: '预测天数',
     universe: '股票池',
     query: '发现问题',
-    queryValue: '从 ESG、事件、新颖度和风险证据链中发现可回测因子。',
+    queryValue: '从价值、质量、动量、波动率、情绪、宏观、事件和 ESG 证据链中发现可回测因子。',
     minIc: '最小 |IC|',
     discover: '发现因子',
     cards: '精选因子卡',
@@ -422,6 +422,8 @@ async function runDiscover(container) {
 }
 
 function renderResults(container, cards, payload) {
+  const cardPanel = container?.querySelector('#factor-card-panel');
+  if (!cardPanel) return;
   const allCards = cards || [];
   const statusBase = filteredByMinIc(container, allCards);
   const visible = filteredCards(container, allCards);
@@ -430,7 +432,7 @@ function renderResults(container, cards, payload) {
   const pageItems = visible.slice((_view.page - 1) * _view.pageSize, _view.page * _view.pageSize);
   const degradedBanner = _degradedMeta ? renderDegradedNotice(_degradedMeta) : '';
 
-  container.querySelector('#factor-card-panel').innerHTML = `
+  cardPanel.innerHTML = `
     ${degradedBanner}
     <div class="workbench-metric-grid factor-card-metrics">
       ${metric(getLang() === 'zh' ? '因子数' : 'Factors', num(visible.length, 0))}

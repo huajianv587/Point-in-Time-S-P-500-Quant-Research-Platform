@@ -18,13 +18,14 @@ from typing import Any, Iterable
 import requests
 from dotenv import load_dotenv
 
-
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
+from config.esg_paths import resolve_esg_corpus_root
+
 DEFAULT_ESG_ROOT = PROJECT_ROOT / "esg_reports"
 LEGACY_ESG_ROOT = PROJECT_ROOT / "ESG\u62a5\u544a"
-ESG_ROOT = DEFAULT_ESG_ROOT if DEFAULT_ESG_ROOT.exists() else LEGACY_ESG_ROOT
+ESG_ROOT = resolve_esg_corpus_root()
 STORAGE_ROOT = PROJECT_ROOT / "storage" / "esg_corpus"
 EMBED_ROOT = PROJECT_ROOT / "storage" / "rag" / "esg_reports_openai_3072"
 DOWNLOADER_PATH = ESG_ROOT / "esg_report_downloader_2022_2026.py"
@@ -130,10 +131,9 @@ class CorpusRecord:
 def set_corpus_root(path: str | Path | None) -> Path:
     global ESG_ROOT, DOWNLOADER_PATH
     if path:
-        candidate = Path(path)
-        ESG_ROOT = candidate if candidate.is_absolute() else PROJECT_ROOT / candidate
+        ESG_ROOT = resolve_esg_corpus_root(path)
     else:
-        ESG_ROOT = DEFAULT_ESG_ROOT if DEFAULT_ESG_ROOT.exists() else LEGACY_ESG_ROOT
+        ESG_ROOT = resolve_esg_corpus_root()
     DOWNLOADER_PATH = ESG_ROOT / "esg_report_downloader_2022_2026.py"
     return ESG_ROOT
 
@@ -1328,7 +1328,11 @@ def rag_quality(records: list[CorpusRecord], *, evidence_chain: bool = False) ->
 def main() -> int:
     parser = argparse.ArgumentParser(description="Build the ESG corpus, local embeddings, V2 house scores, and RAG QA reports.")
     parser.add_argument("action", choices=["coverage", "download", "embed", "score", "rag-check", "all"])
-    parser.add_argument("--corpus-root", default=None, help="ESG report root. Defaults to esg_reports/ with legacy ESG报告/ fallback.")
+    parser.add_argument(
+        "--corpus-root",
+        default=None,
+        help="ESG report root. Defaults to ESG_CORPUS_ROOT or an existing local/external corpus.",
+    )
     parser.add_argument("--limit", type=int, default=None, help="Maximum direct-download attempts for this run.")
     parser.add_argument("--force", action="store_true")
     parser.add_argument("--timeout", type=int, default=30)

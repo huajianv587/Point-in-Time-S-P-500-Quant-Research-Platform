@@ -51,7 +51,7 @@ const CACHE_CONFIG = {
     ttl: 0,
     endpoints: [
       '/api/auth/',
-      '/api/session',
+      '/session',
       '/api/agent/',
       '/api/v1/quant/execution/paper',
       '/api/v1/quant/execution/run',
@@ -287,13 +287,13 @@ export const api = {
     newSession: (sessionId, userId) => {
       let query = '?session_id=' + encodeURIComponent(sessionId || '');
       if (userId) query += '&user_id=' + encodeURIComponent(userId);
-      return _post('/api/session' + query, undefined);
+      return _post('/session' + query, undefined);
     },
     history: (sessionId, limit) => {
-      return _get('/api/history/' + encodeURIComponent(sessionId) + '?limit=' + encodeURIComponent(limit || 20));
+      return _get('/history/' + encodeURIComponent(sessionId) + '?limit=' + encodeURIComponent(limit || 20));
     },
-    analyze: (payload) => _post('/api/agent/analyze', payload),
-    esgScore: (payload) => _post('/api/agent/esg-score', payload),
+    analyze: (payload) => _post('/agent/analyze', payload),
+    esgScore: (payload) => _post('/agent/esg-score', payload),
   },
 
   research: {

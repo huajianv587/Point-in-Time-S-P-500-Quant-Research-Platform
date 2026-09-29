@@ -120,7 +120,7 @@ function buildShell() {
             <div class="run-panel__body">
               <div class="form-group">
                 <label class="form-label">${c('strategy')}</label>
-                <input class="form-input" id="sweep-strategy" value="ESG Multi-Factor">
+                <input class="form-input" id="sweep-strategy" value="S&P 500 Multi-Factor">
               </div>
               <div class="form-group">
                 <label class="form-label">${c('baseUniverse')}</label>
@@ -330,7 +330,7 @@ async function loadRecentSweeps(container) {
 
     // Mock data for now - replace with actual API call when available
     const sweeps = [
-      { run_id: 'sweep_001', strategy: 'ESG Multi-Factor', timestamp: new Date().toISOString(), status: 'completed', best_sharpe: 1.85 },
+      { run_id: 'sweep_001', strategy: 'S&P 500 Multi-Factor', timestamp: new Date().toISOString(), status: 'completed', best_sharpe: 1.85 },
       { run_id: 'sweep_002', strategy: 'Momentum', timestamp: new Date(Date.now() - 86400000).toISOString(), status: 'completed', best_sharpe: 1.62 },
     ];
 

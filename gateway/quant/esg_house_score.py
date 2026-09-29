@@ -8,7 +8,7 @@ FORMULA_VERSION = "JHJ_HOUSE_SCORE_V2"
 CALIBRATED_FORMULA_VERSION = "JHJ_HOUSE_SCORE_V2_1_CALIBRATED"
 
 
-@dataclass(slots=True)
+@dataclass
 class HouseScoreBreakdown:
     house_score: float
     house_grade: str

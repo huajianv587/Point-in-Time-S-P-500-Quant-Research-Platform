@@ -431,7 +431,7 @@ window.addEventListener('beforeunload', () => {
 });
 
 // Expose cache stats in development
-if (process.env.NODE_ENV === 'development') {
+if (globalThis.process?.env?.NODE_ENV === 'development') {
   window.__CACHE_STATS__ = () => cacheManager.getStats();
   window.__CACHE_CLEAR__ = () => cacheManager.clear();
 }

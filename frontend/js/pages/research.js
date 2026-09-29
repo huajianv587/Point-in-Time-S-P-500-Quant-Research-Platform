@@ -89,7 +89,7 @@ const COPY = {
     horizonLabel: '周期（天）',
     questionLabel: '研究问题',
     questionPlaceholder: '当前哪些名字同时具备 ESG 与因子支持？',
-    defaultQuestion: '运行默认 ESG 量化研究管线',
+    defaultQuestion: '运行默认 S&P 500 多因子研究管线',
     run: '运行研究管线',
     running: '运行中…',
     pipelineRunning: '管线运行中',

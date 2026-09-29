@@ -190,7 +190,7 @@ function buildShell() {
             <div class="run-panel__body">
               <div class="form-group">
                 <label class="form-label">${c('strategy')}</label>
-                <input class="form-input" id="bt-strategy" value="ESG Multi-Factor Long-Only">
+                    <input class="form-input" id="bt-strategy" value="S&P 500 Multi-Factor Long-Only">
               </div>
               <div class="form-group">
                 <label class="form-label">${c('universe')}</label>
@@ -418,7 +418,7 @@ async function runBacktest(container) {
   button.textContent = c('running');
 
   const payload = {
-    strategy_name: container.querySelector('#bt-strategy').value.trim() || 'ESG Multi-Factor Long-Only',
+    strategy_name: container.querySelector('#bt-strategy').value.trim() || 'S&P 500 Multi-Factor Long-Only',
     universe: parseUniverse(container.querySelector('#bt-universe').value),
     benchmark: container.querySelector('#bt-benchmark').value,
     capital_base: Number(container.querySelector('#bt-capital').value) || 1000000,

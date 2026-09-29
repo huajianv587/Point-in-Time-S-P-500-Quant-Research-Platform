@@ -18,6 +18,10 @@ data/raw/
 data/raw_big_doc_data/
 data/vectorstore/
 
+# Optional external ESG corpus. Keep manifests in docs or storage, not raw PDFs in Git.
+esg_reports/
+ESG报告/
+
 # 模型权重和训练 checkpoint
 model-serving/checkpoint/checkpoint-*/
 

@@ -1,6 +1,6 @@
 import hashlib
 import time
-from typing import Any
+from typing import Any, Dict, Optional
 from gateway.utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -9,7 +9,7 @@ TTL_SECONDS = 3600   # 缓存有效期 1 小时
 
 # 进程内内存缓存，结构: { md5_key: {"value": Any, "expires_at": float} }
 # 进程重启后缓存清零；无持久化，无跨进程共享
-_store: dict[str, dict[str, Any]] = {}
+_store: Dict[str, Dict[str, Any]] = {}
 
 
 def _make_key(text: str) -> str:
@@ -21,8 +21,8 @@ def _make_key(text: str) -> str:
 def set_cache(
     question: str,
     value: Any,
-    ttl_hours: float | None = None,
-    ttl_seconds: float | None = None,
+    ttl_hours: Optional[float] = None,
+    ttl_seconds: Optional[float] = None,
 ) -> None:
     """
     将任意可序列化问答结果写入缓存，TTL 为 1 小时。

@@ -11,7 +11,7 @@ def test_root_serves_product_site():
     response = client.get("/")
 
     assert response.status_code == 200
-    assert "ESG Quant IO" in response.text
+    assert "Private S&amp;P 500 Quant" in response.text
     assert '/app/#/dashboard' in response.text
     assert 'data-app-entry="dashboard"' in response.text
     assert '进入控制台' in response.text
@@ -28,7 +28,7 @@ def test_app_and_blueprint_entrypoints_exist():
     assert app_index_response.status_code == 200
     assert "Quant Terminal" in app_index_response.text
     assert "/app/app-config.js" in app_index_response.text
-    assert "ESG Quant IO" not in app_index_response.text
+    assert "Private S&amp;P 500 Quant" not in app_index_response.text
 
     assert Path("api/main.py").exists()
     assert Path("config/settings.py").exists()

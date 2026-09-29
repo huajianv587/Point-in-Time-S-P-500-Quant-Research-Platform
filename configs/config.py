@@ -127,7 +127,11 @@ class Settings:
         self.NEWS_API_KEY = _first_env("NEWS_API_KEY", "NEWSAPI_KEY")
         self.QUANT_DEFAULT_CAPITAL = _env_float("QUANT_DEFAULT_CAPITAL", default=1_000_000.0)
         self.QUANT_DEFAULT_BENCHMARK = _first_env("QUANT_DEFAULT_BENCHMARK", default="SPY")
-        self.QUANT_DEFAULT_UNIVERSE = _first_env("QUANT_DEFAULT_UNIVERSE", default="ESG_US_LARGE_CAP")
+        self.QUANT_DEFAULT_UNIVERSE = _first_env("QUANT_DEFAULT_UNIVERSE", default="SP500")
+        self.SP500_CONSTITUENTS_PATH = _first_env(
+            "SP500_CONSTITUENTS_PATH",
+            default="storage/quant/universe/sp500_constituents.csv",
+        )
         self.REMOTE_TRAINING_TARGET = _first_env("REMOTE_TRAINING_TARGET", default="Cloud RTX 5090 Finetune Node")
         self.MARKET_DATA_PROVIDER = _first_env("MARKET_DATA_PROVIDER", default="alpaca,yfinance")
         self.MARKET_DATA_CACHE_DB = _first_env("MARKET_DATA_CACHE_DB", default="storage/quant/market_data/bars.sqlite3")

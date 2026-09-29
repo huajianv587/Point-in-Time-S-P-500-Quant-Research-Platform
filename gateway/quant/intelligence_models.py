@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Literal
+from typing import Any, Dict, List, Literal, Optional, Union
 
 from pydantic import BaseModel, Field
 
@@ -32,10 +32,10 @@ class InformationItem(BaseModel):
     summary: str
     symbol: str
     company_name: str
-    url: str | None = None
-    published_at: str | None = None
+    url: Optional[str] = None
+    published_at: Optional[str] = None
     observed_at: str
-    event_date: str | None = None
+    event_date: Optional[str] = None
     checksum: str
     content_hash: str
     license_note: str = "internal research use"
@@ -44,19 +44,19 @@ class InformationItem(BaseModel):
     quality_score: float = Field(ge=0.0, le=1.0)
     dedup_id: str
     leakage_guard: Literal["as_of_safe", "future_dated_warning", "missing_timestamp_warning"]
-    metadata: dict[str, Any] = Field(default_factory=dict)
+    metadata: Dict[str, Any] = Field(default_factory=dict)
 
 
 class EvidenceBundle(BaseModel):
     bundle_id: str
     generated_at: str
     decision_time: str
-    universe: list[str] = Field(default_factory=list)
+    universe: List[str] = Field(default_factory=list)
     query: str = ""
-    items: list[InformationItem] = Field(default_factory=list)
-    connector_status: dict[str, Any] = Field(default_factory=dict)
-    quality_summary: dict[str, Any] = Field(default_factory=dict)
-    lineage: list[str] = Field(default_factory=list)
+    items: List[InformationItem] = Field(default_factory=list)
+    connector_status: Dict[str, Any] = Field(default_factory=dict)
+    quality_summary: Dict[str, Any] = Field(default_factory=dict)
+    lineage: List[str] = Field(default_factory=list)
 
 
 class StructuredEvent(BaseModel):
@@ -75,7 +75,7 @@ class StructuredEvent(BaseModel):
     decay_half_life_days: int = Field(ge=1)
     observed_at: str
     leakage_guard: str
-    metadata: dict[str, Any] = Field(default_factory=dict)
+    metadata: Dict[str, Any] = Field(default_factory=dict)
 
 
 class FactorCandidate(BaseModel):
@@ -84,11 +84,11 @@ class FactorCandidate(BaseModel):
     family: str
     description: str
     horizon_days: int
-    universe: list[str] = Field(default_factory=list)
-    exposures: dict[str, float] = Field(default_factory=dict)
-    source_item_ids: list[str] = Field(default_factory=list)
-    leakage_audit: dict[str, Any] = Field(default_factory=dict)
-    lineage: list[str] = Field(default_factory=list)
+    universe: List[str] = Field(default_factory=list)
+    exposures: Dict[str, float] = Field(default_factory=dict)
+    source_item_ids: List[str] = Field(default_factory=list)
+    leakage_audit: Dict[str, Any] = Field(default_factory=dict)
+    lineage: List[str] = Field(default_factory=list)
 
 
 class FactorCard(BaseModel):
@@ -100,11 +100,11 @@ class FactorCard(BaseModel):
     market: str = "US"
     frequency: Literal["daily", "intraday", "hybrid"] = "daily"
     data_tier: DataTier = "l1"
-    dataset_id: str | None = None
+    dataset_id: Optional[str] = None
     protection_status: Literal["pass", "review", "blocked"] = "review"
     registry_gate_status: RegistryGateStatus = "review"
-    blocking_reasons: list[str] = Field(default_factory=list)
-    universe: list[str] = Field(default_factory=list)
+    blocking_reasons: List[str] = Field(default_factory=list)
+    universe: List[str] = Field(default_factory=list)
     horizon_days: int
     missing_rate: float = Field(ge=0.0, le=1.0)
     ic: float
@@ -113,9 +113,9 @@ class FactorCard(BaseModel):
     transaction_cost_sensitivity: str
     stability_score: float = Field(ge=0.0, le=1.0)
     sample_count: int
-    gate_results: dict[str, Any] = Field(default_factory=dict)
-    failure_modes: list[str] = Field(default_factory=list)
-    lineage: list[str] = Field(default_factory=list)
+    gate_results: Dict[str, Any] = Field(default_factory=dict)
+    failure_modes: List[str] = Field(default_factory=list)
+    lineage: List[str] = Field(default_factory=list)
 
 
 class InstrumentContract(BaseModel):
@@ -136,41 +136,41 @@ class DatasetManifest(BaseModel):
     frequency: Literal["daily", "intraday", "hybrid"] = "daily"
     data_tier: DataTier = "l1"
     as_of_time: str
-    universe: list[str] = Field(default_factory=list)
-    instruments: list[InstrumentContract] = Field(default_factory=list)
-    provider_chain: list[str] = Field(default_factory=list)
-    freshness: dict[str, Any] = Field(default_factory=dict)
-    market_depth_status: dict[str, Any] = Field(default_factory=dict)
-    depth_session_ids: list[str] = Field(default_factory=list)
-    provider_capabilities: dict[str, dict[str, Any]] = Field(default_factory=dict)
-    lineage: list[str] = Field(default_factory=list)
-    feature_store: dict[str, dict[str, float]] = Field(default_factory=dict)
-    metadata: dict[str, Any] = Field(default_factory=dict)
+    universe: List[str] = Field(default_factory=list)
+    instruments: List[InstrumentContract] = Field(default_factory=list)
+    provider_chain: List[str] = Field(default_factory=list)
+    freshness: Dict[str, Any] = Field(default_factory=dict)
+    market_depth_status: Dict[str, Any] = Field(default_factory=dict)
+    depth_session_ids: List[str] = Field(default_factory=list)
+    provider_capabilities: Dict[str, Dict[str, Any]] = Field(default_factory=dict)
+    lineage: List[str] = Field(default_factory=list)
+    feature_store: Dict[str, Dict[str, float]] = Field(default_factory=dict)
+    metadata: Dict[str, Any] = Field(default_factory=dict)
 
 
 class ResearchProtectionReport(BaseModel):
     report_id: str
     generated_at: str
-    dataset_id: str | None = None
-    decision_time: str | None = None
+    dataset_id: Optional[str] = None
+    decision_time: Optional[str] = None
     market: str = "US"
     frequency: Literal["daily", "intraday", "hybrid"] = "daily"
     data_tier: DataTier = "l1"
     required_data_tier: DataTier = "l1"
     protection_status: Literal["pass", "review", "blocked"] = "review"
-    market_depth_status: dict[str, Any] = Field(default_factory=dict)
-    checks: dict[str, dict[str, Any]] = Field(default_factory=dict)
-    blocking_checks: list[str] = Field(default_factory=list)
-    blocking_reasons: list[str] = Field(default_factory=list)
-    warnings: list[str] = Field(default_factory=list)
-    lineage: list[str] = Field(default_factory=list)
+    market_depth_status: Dict[str, Any] = Field(default_factory=dict)
+    checks: Dict[str, Dict[str, Any]] = Field(default_factory=dict)
+    blocking_checks: List[str] = Field(default_factory=list)
+    blocking_reasons: List[str] = Field(default_factory=list)
+    warnings: List[str] = Field(default_factory=list)
+    lineage: List[str] = Field(default_factory=list)
 
 
 class OrderBookLevel(BaseModel):
     level: int = Field(ge=1)
     price: float = Field(ge=0.0)
     size: float = Field(ge=0.0, default=0.0)
-    order_count: int | None = Field(default=None, ge=0)
+    order_count: Optional[int] = Field(default=None, ge=0)
 
 
 class OrderBookSnapshot(BaseModel):
@@ -180,8 +180,8 @@ class OrderBookSnapshot(BaseModel):
     timestamp: str
     session: str = "regular"
     is_real: bool = False
-    bids: list[OrderBookLevel] = Field(default_factory=list)
-    asks: list[OrderBookLevel] = Field(default_factory=list)
+    bids: List[OrderBookLevel] = Field(default_factory=list)
+    asks: List[OrderBookLevel] = Field(default_factory=list)
     best_bid: float = Field(ge=0.0, default=0.0)
     best_ask: float = Field(ge=0.0, default=0.0)
     mid_price: float = Field(ge=0.0, default=0.0)
@@ -189,7 +189,7 @@ class OrderBookSnapshot(BaseModel):
     total_bid_size: float = Field(ge=0.0, default=0.0)
     total_ask_size: float = Field(ge=0.0, default=0.0)
     imbalance: float = 0.0
-    metadata: dict[str, Any] = Field(default_factory=dict)
+    metadata: Dict[str, Any] = Field(default_factory=dict)
 
 
 class MarketDepthReplay(BaseModel):
@@ -199,27 +199,27 @@ class MarketDepthReplay(BaseModel):
     provider: str
     data_tier: DataTier = "l1"
     is_real_provider: bool = False
-    snapshots: list[OrderBookSnapshot] = Field(default_factory=list)
-    summary: dict[str, Any] = Field(default_factory=dict)
-    warnings: list[str] = Field(default_factory=list)
-    lineage: list[str] = Field(default_factory=list)
+    snapshots: List[OrderBookSnapshot] = Field(default_factory=list)
+    summary: Dict[str, Any] = Field(default_factory=dict)
+    warnings: List[str] = Field(default_factory=list)
+    lineage: List[str] = Field(default_factory=list)
 
 
 class MarketDepthStatus(BaseModel):
     generated_at: str
-    symbols: list[str] = Field(default_factory=list)
+    symbols: List[str] = Field(default_factory=list)
     selected_provider: str = "unavailable"
-    configured_providers: list[str] = Field(default_factory=list)
-    provider_capabilities: dict[str, dict[str, Any]] = Field(default_factory=dict)
+    configured_providers: List[str] = Field(default_factory=list)
+    provider_capabilities: Dict[str, Dict[str, Any]] = Field(default_factory=dict)
     available: bool = False
     is_real_provider: bool = False
     history_ready: bool = False
     realtime_ready: bool = False
     data_tier: DataTier = "l1"
     eligibility_status: RegistryGateStatus = "review"
-    blocking_reasons: list[str] = Field(default_factory=list)
-    latest: list[OrderBookSnapshot] = Field(default_factory=list)
-    lineage: list[str] = Field(default_factory=list)
+    blocking_reasons: List[str] = Field(default_factory=list)
+    latest: List[OrderBookSnapshot] = Field(default_factory=list)
+    lineage: List[str] = Field(default_factory=list)
 
 
 class SweepRun(BaseModel):
@@ -227,20 +227,20 @@ class SweepRun(BaseModel):
     generated_at: str
     strategy_name: str
     benchmark: str
-    universe: list[str] = Field(default_factory=list)
+    universe: List[str] = Field(default_factory=list)
     market: str = "US"
     frequency: Literal["daily", "intraday", "hybrid"] = "daily"
     data_tier: DataTier = "l1"
-    dataset_id: str | None = None
+    dataset_id: Optional[str] = None
     protection_status: Literal["pass", "review", "blocked"] = "review"
-    market_depth_status: dict[str, Any] = Field(default_factory=dict)
-    provider_capabilities: dict[str, dict[str, Any]] = Field(default_factory=dict)
-    parameter_grid: dict[str, list[Any]] = Field(default_factory=dict)
-    combinations: list[dict[str, Any]] = Field(default_factory=list)
-    summary: dict[str, Any] = Field(default_factory=dict)
-    best_run: dict[str, Any] = Field(default_factory=dict)
-    walk_forward: dict[str, Any] = Field(default_factory=dict)
-    lineage: list[str] = Field(default_factory=list)
+    market_depth_status: Dict[str, Any] = Field(default_factory=dict)
+    provider_capabilities: Dict[str, Dict[str, Any]] = Field(default_factory=dict)
+    parameter_grid: Dict[str, List[Any]] = Field(default_factory=dict)
+    combinations: List[Dict[str, Any]] = Field(default_factory=list)
+    summary: Dict[str, Any] = Field(default_factory=dict)
+    best_run: Dict[str, Any] = Field(default_factory=dict)
+    walk_forward: Dict[str, Any] = Field(default_factory=dict)
+    lineage: List[str] = Field(default_factory=list)
 
 
 class TearsheetReport(BaseModel):
@@ -252,16 +252,16 @@ class TearsheetReport(BaseModel):
     frequency: Literal["daily", "intraday", "hybrid"] = "daily"
     data_tier: DataTier = "l1"
     protection_status: Literal["pass", "review", "blocked"] = "review"
-    market_depth_status: dict[str, Any] = Field(default_factory=dict)
-    summary: dict[str, Any] = Field(default_factory=dict)
-    sections: dict[str, Any] = Field(default_factory=dict)
+    market_depth_status: Dict[str, Any] = Field(default_factory=dict)
+    summary: Dict[str, Any] = Field(default_factory=dict)
+    sections: Dict[str, Any] = Field(default_factory=dict)
     html: str
-    lineage: list[str] = Field(default_factory=list)
+    lineage: List[str] = Field(default_factory=list)
 
 
 class SimulationScenario(BaseModel):
     symbol: str = "AAPL"
-    universe: list[str] = Field(default_factory=list)
+    universe: List[str] = Field(default_factory=list)
     horizon_days: int = Field(default=20, ge=1, le=252)
     shock_bps: float = 0.0
     transaction_cost_bps: float = 8.0
@@ -271,8 +271,8 @@ class SimulationScenario(BaseModel):
     scenario_name: str = "base_case"
     event_assumption: str = ""
     regime: str = "neutral"
-    event_id: str | None = None
-    evidence_run_id: str | None = None
+    event_id: Optional[str] = None
+    evidence_run_id: Optional[str] = None
     required_data_tier: DataTier = "l1"
 
 
@@ -287,11 +287,11 @@ class SimulationResult(BaseModel):
     max_drawdown_p95: float
     value_at_risk_95: float
     expected_shortfall_95: float
-    path_summary: dict[str, float] = Field(default_factory=dict)
-    factor_attribution: dict[str, float] = Field(default_factory=dict)
-    historical_analogs: list[dict[str, Any]] = Field(default_factory=list)
-    market_depth_status: dict[str, Any] = Field(default_factory=dict)
-    lineage: list[str] = Field(default_factory=list)
+    path_summary: Dict[str, float] = Field(default_factory=dict)
+    factor_attribution: Dict[str, float] = Field(default_factory=dict)
+    historical_analogs: List[Dict[str, Any]] = Field(default_factory=list)
+    market_depth_status: Dict[str, Any] = Field(default_factory=dict)
+    lineage: List[str] = Field(default_factory=list)
 
 
 class DecisionReport(BaseModel):
@@ -301,36 +301,36 @@ class DecisionReport(BaseModel):
     symbol: str
     company_name: str
     action: Literal["long", "neutral", "short"]
-    position_weight_range: dict[str, float]
+    position_weight_range: Dict[str, float]
     confidence: float = Field(ge=0.0, le=1.0)
-    confidence_interval: dict[str, float]
+    confidence_interval: Dict[str, float]
     expected_return: float
-    main_evidence: list[InformationItem] = Field(default_factory=list)
-    counter_evidence: list[InformationItem] = Field(default_factory=list)
-    risk_triggers: list[str] = Field(default_factory=list)
-    factor_attribution: dict[str, float] = Field(default_factory=dict)
-    factor_cards: list[FactorCard] = Field(default_factory=list)
-    simulation: SimulationResult | None = None
-    verifier_checks: dict[str, Any] = Field(default_factory=dict)
-    data_versions: dict[str, Any] = Field(default_factory=dict)
-    model_versions: dict[str, Any] = Field(default_factory=dict)
-    audit_trail: list[str] = Field(default_factory=list)
+    main_evidence: List[InformationItem] = Field(default_factory=list)
+    counter_evidence: List[InformationItem] = Field(default_factory=list)
+    risk_triggers: List[str] = Field(default_factory=list)
+    factor_attribution: Dict[str, float] = Field(default_factory=dict)
+    factor_cards: List[FactorCard] = Field(default_factory=list)
+    simulation: Optional[SimulationResult] = None
+    verifier_checks: Dict[str, Any] = Field(default_factory=dict)
+    data_versions: Dict[str, Any] = Field(default_factory=dict)
+    model_versions: Dict[str, Any] = Field(default_factory=dict)
+    audit_trail: List[str] = Field(default_factory=list)
 
 
 class OutcomeRecord(BaseModel):
     outcome_id: str
-    decision_id: str | None = None
+    decision_id: Optional[str] = None
     symbol: str
     recorded_at: str
-    decision_time: str | None = None
+    decision_time: Optional[str] = None
     horizon_days: int
-    predicted_return: float | None = None
+    predicted_return: Optional[float] = None
     realized_return: float
     benchmark_return: float = 0.0
     excess_return: float
-    direction_hit: bool | None = None
-    brier_component: float | None = None
-    regret: float | None = None
+    direction_hit: Optional[bool] = None
+    brier_component: Optional[float] = None
+    regret: Optional[float] = None
     drawdown_breach: bool = False
     notes: str = ""
-    lineage: list[str] = Field(default_factory=list)
+    lineage: List[str] = Field(default_factory=list)

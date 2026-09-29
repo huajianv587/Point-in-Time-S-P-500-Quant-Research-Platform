@@ -58,7 +58,7 @@ def create_app(app_runtime: RuntimeContext = runtime) -> FastAPI:
         finally:
             await app_runtime.shutdown(app)
 
-    app = FastAPI(title="ESG Agentic RAG Copilot", lifespan=lifespan)
+    app = FastAPI(title="Private S&P 500 Quant Research Platform", lifespan=lifespan)
     app.state.runtime = app_runtime
     app.state.app_id = APP_ID
     app.state.service_name = APP_SERVICE_NAME

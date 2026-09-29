@@ -11,6 +11,7 @@ from typing import Any
 
 import requests
 
+from config.esg_paths import resolve_esg_corpus_root
 
 def utc_now() -> str:
     return datetime.now(timezone.utc).isoformat()
@@ -539,7 +540,7 @@ class LocalEsgConnector(BaseFreeConnector):
     )
 
     def _fetch_live(self, symbol: str) -> Any:
-        report_dir = self.storage_root.parent / "esg_reports"
+        report_dir = resolve_esg_corpus_root()
         paths = sorted(report_dir.glob(f"**/{symbol}_ESG_2025*.pdf"))[:3]
         if symbol.upper() == "AAPL":
             paths = sorted((report_dir / "Apple").glob("Apple * 2025*.pdf"))[:3]

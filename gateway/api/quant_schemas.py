@@ -40,7 +40,7 @@ class QuantP2DecisionRequest(BaseModel):
 
 
 class QuantBacktestRequest(BaseModel):
-    strategy_name: str = "ESG Multi-Factor Long-Only"
+    strategy_name: str = "S&P 500 Multi-Factor Long-Only"
     universe: list[str] = Field(default_factory=list)
     benchmark: str = "SPY"
     capital_base: float = 1_000_000
@@ -50,7 +50,7 @@ class QuantBacktestRequest(BaseModel):
 
 
 class QuantBacktestSweepRequest(BaseModel):
-    strategy_name: str = "ESG Multi-Factor Long-Only"
+    strategy_name: str = "S&P 500 Multi-Factor Long-Only"
     universe: list[str] = Field(default_factory=list)
     benchmark: str = "SPY"
     capital_base: float = 1_000_000
@@ -93,7 +93,7 @@ class QuantKillSwitchRequest(BaseModel):
 
 
 class QuantValidationRequest(BaseModel):
-    strategy_name: str = "ESG Multi-Factor Long-Only"
+    strategy_name: str = "S&P 500 Multi-Factor Long-Only"
     universe: list[str] = Field(default_factory=list)
     benchmark: str = "SPY"
     capital_base: float = 1_000_000

@@ -1,59 +1,35 @@
-#!/bin/bash
-# Quant Terminal 启动脚本
+#!/usr/bin/env bash
+set -euo pipefail
 
-echo "=========================================="
-echo "Quant Terminal - 启动服务"
-echo "=========================================="
-echo ""
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PYTHON_BIN="${PYTHON_BIN:-python3}"
+HOST="${HOST:-127.0.0.1}"
+PORT="${PORT:-8000}"
 
-# 检查Python环境
-if ! command -v python &> /dev/null; then
-    echo "错误: 未找到Python"
+cd "$ROOT_DIR"
+
+if ! command -v "$PYTHON_BIN" >/dev/null 2>&1; then
+    echo "错误: 未找到 $PYTHON_BIN。可用 PYTHON_BIN=/path/to/python3.12 ./start_services.sh" >&2
     exit 1
 fi
 
-# 检查依赖
-echo "检查依赖..."
-pip list | grep fastapi > /dev/null
-if [ $? -ne 0 ]; then
-    echo "安装依赖..."
-    pip install -r full_suite_source_bundle_20260421/requirements.txt
-fi
+"$PYTHON_BIN" - <<'PY'
+import sys
 
-# 启动后端服务器
-echo ""
-echo "启动后端服务器 (端口 8000)..."
-cd full_suite_source_bundle_20260421
-python -m uvicorn gateway.main:app --host 0.0.0.0 --port 8000 --reload &
-BACKEND_PID=$!
-echo "后端PID: $BACKEND_PID"
+if sys.version_info < (3, 11):
+    raise SystemExit(f"需要 Python >= 3.11，当前为 {sys.version.split()[0]}")
 
-# 等待后端启动
-echo "等待后端启动..."
-sleep 5
+try:
+    import fastapi  # noqa: F401
+    import uvicorn  # noqa: F401
+except ImportError as exc:
+    raise SystemExit(f"缺少运行依赖: {exc}。请先执行: {sys.executable} -m pip install -r requirements.txt")
+PY
 
-# 启动前端服务器
-echo ""
-echo "启动前端服务器 (端口 8080)..."
-cd ../frontend
-python -m http.server 8080 &
-FRONTEND_PID=$!
-echo "前端PID: $FRONTEND_PID"
+echo "Quant Terminal"
+echo "项目目录: $ROOT_DIR"
+echo "控制台: http://$HOST:$PORT/app/"
+echo "API 文档: http://$HOST:$PORT/docs"
+echo "按 Ctrl+C 停止服务"
 
-echo ""
-echo "=========================================="
-echo "服务启动完成！"
-echo "=========================================="
-echo "后端API: http://localhost:8000"
-echo "API文档: http://localhost:8000/docs"
-echo "前端应用: http://localhost:8080"
-echo ""
-echo "按 Ctrl+C 停止所有服务"
-echo "=========================================="
-
-# 保存PID到文件
-echo $BACKEND_PID > .backend.pid
-echo $FRONTEND_PID > .frontend.pid
-
-# 等待用户中断
-wait
+exec "$PYTHON_BIN" -m uvicorn gateway.main:app --host "$HOST" --port "$PORT"

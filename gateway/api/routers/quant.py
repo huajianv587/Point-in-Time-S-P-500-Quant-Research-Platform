@@ -95,6 +95,7 @@ def get_default_universe():
     return {
         "universe_name": service.default_universe_name,
         "benchmark": service.default_benchmark,
+        "status": service.default_universe_status(),
         "members": [member.model_dump() for member in service.get_default_universe()],
     }
 

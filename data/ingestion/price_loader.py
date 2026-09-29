@@ -1,8 +1,9 @@
+from typing import Dict, List, Optional
 
 from gateway.quant.service import get_quant_system
 
 
-def load_dataset(symbols: list[str] | None = None) -> dict:
+def load_dataset(symbols: Optional[List[str]] = None) -> Dict:
     universe = get_quant_system().get_default_universe(symbols)
     return {
         "module": "price_loader",

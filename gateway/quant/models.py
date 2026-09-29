@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Literal
+from typing import Any, Dict, List, Optional, Literal, Union
 
 from pydantic import BaseModel, Field
 
@@ -32,8 +32,8 @@ class FactorScore(BaseModel):
 class ProjectionScenario(BaseModel):
     label: str
     expected_return: float
-    confidence: float | None = None
-    band_source: str | None = None
+    confidence: Optional[float] = None
+    band_source: Optional[str] = None
 
 
 class ResearchSignal(BaseModel):
@@ -49,75 +49,75 @@ class ResearchSignal(BaseModel):
     e_score: float
     s_score: float
     g_score: float
-    alpha_model_score: float | None = None
-    alpha_model_name: str | None = None
-    alpha_rank: int | None = None
-    predicted_return_1d: float | None = None
-    predicted_return_5d: float | None = None
-    sequence_return_1d: float | None = None
-    sequence_return_5d: float | None = None
-    sequence_volatility_10d: float | None = None
-    sequence_drawdown_20d: float | None = None
-    predicted_volatility_10d: float | None = None
-    predicted_drawdown_20d: float | None = None
-    sequence_model_version: str | None = None
-    regime_label: str | None = None
-    regime_probability: float | None = None
-    p1_calibrated_probability: float | None = None
-    p1_confidence_calibrated: float | None = None
-    fundamental_score: float | None = None
-    news_sentiment_score: float | None = None
-    p1_stack_score: float | None = None
-    p1_model_version: str | None = None
-    graph_cluster: str | None = None
-    graph_neighbors: list[str] = Field(default_factory=list)
-    graph_centrality: float | None = None
-    graph_contagion_risk: float | None = None
-    graph_diversification_score: float | None = None
-    graph_engine: str | None = None
-    graph_model_version: str | None = None
-    selector_strategy: str | None = None
-    selector_priority_score: float | None = None
-    bandit_strategy: str | None = None
-    bandit_confidence: float | None = None
-    bandit_size_multiplier: float | None = None
-    bandit_execution_style: str | None = None
-    bandit_execution_delay_seconds: int | None = None
-    alpha_engine: str | None = None
-    decision_score: float | None = None
-    decision_confidence: float | None = None
+    alpha_model_score: Optional[float] = None
+    alpha_model_name: Optional[str] = None
+    alpha_rank: Optional[int] = None
+    predicted_return_1d: Optional[float] = None
+    predicted_return_5d: Optional[float] = None
+    sequence_return_1d: Optional[float] = None
+    sequence_return_5d: Optional[float] = None
+    sequence_volatility_10d: Optional[float] = None
+    sequence_drawdown_20d: Optional[float] = None
+    predicted_volatility_10d: Optional[float] = None
+    predicted_drawdown_20d: Optional[float] = None
+    sequence_model_version: Optional[str] = None
+    regime_label: Optional[str] = None
+    regime_probability: Optional[float] = None
+    p1_calibrated_probability: Optional[float] = None
+    p1_confidence_calibrated: Optional[float] = None
+    fundamental_score: Optional[float] = None
+    news_sentiment_score: Optional[float] = None
+    p1_stack_score: Optional[float] = None
+    p1_model_version: Optional[str] = None
+    graph_cluster: Optional[str] = None
+    graph_neighbors: List[str] = Field(default_factory=list)
+    graph_centrality: Optional[float] = None
+    graph_contagion_risk: Optional[float] = None
+    graph_diversification_score: Optional[float] = None
+    graph_engine: Optional[str] = None
+    graph_model_version: Optional[str] = None
+    selector_strategy: Optional[str] = None
+    selector_priority_score: Optional[float] = None
+    bandit_strategy: Optional[str] = None
+    bandit_confidence: Optional[float] = None
+    bandit_size_multiplier: Optional[float] = None
+    bandit_execution_style: Optional[str] = None
+    bandit_execution_delay_seconds: Optional[int] = None
+    alpha_engine: Optional[str] = None
+    decision_score: Optional[float] = None
+    decision_confidence: Optional[float] = None
     signal_source: str = "heuristic"
-    factor_scores: list[FactorScore] = Field(default_factory=list)
-    catalysts: list[str] = Field(default_factory=list)
-    data_lineage: list[str] = Field(default_factory=list)
-    lineage: list[str] = Field(default_factory=list)
-    dataset_id: str | None = None
+    factor_scores: List[FactorScore] = Field(default_factory=list)
+    catalysts: List[str] = Field(default_factory=list)
+    data_lineage: List[str] = Field(default_factory=list)
+    lineage: List[str] = Field(default_factory=list)
+    dataset_id: Optional[str] = None
     protection_status: Literal["pass", "review", "blocked"] = "review"
     frequency: Literal["daily", "intraday", "hybrid"] = "daily"
     data_tier: Literal["l1", "l2"] = "l1"
     registry_gate_status: Literal["pass", "review", "blocked"] = "review"
-    blocking_reasons: list[str] = Field(default_factory=list)
+    blocking_reasons: List[str] = Field(default_factory=list)
     market: str = "US"
-    market_data_source: str | None = None
-    prediction_mode: Literal["model", "unavailable"] | None = None
-    projection_basis_return: float | None = None
-    projection_scenarios: dict[str, ProjectionScenario] = Field(default_factory=dict)
-    house_score: float | None = None
-    house_grade: str | None = None
-    formula_version: str | None = None
-    pillar_breakdown: dict[str, float] = Field(default_factory=dict)
-    disclosure_confidence: float | None = None
-    controversy_penalty: float | None = None
-    data_gap_penalty: float | None = None
-    materiality_adjustment: float | None = None
-    trend_bonus: float | None = None
-    house_explanation: str | None = None
-    house_score_v2: float | None = None
-    materiality_weights: dict[str, float] = Field(default_factory=dict)
-    evidence_count: int | None = None
-    effective_date: str | None = None
-    staleness_days: int | None = None
-    score_delta: float | None = None
+    market_data_source: Optional[str] = None
+    prediction_mode: Optional[Literal["model", "unavailable"]] = None
+    projection_basis_return: Optional[float] = None
+    projection_scenarios: Dict[str, ProjectionScenario] = Field(default_factory=dict)
+    house_score: Optional[float] = None
+    house_grade: Optional[str] = None
+    formula_version: Optional[str] = None
+    pillar_breakdown: Dict[str, float] = Field(default_factory=dict)
+    disclosure_confidence: Optional[float] = None
+    controversy_penalty: Optional[float] = None
+    data_gap_penalty: Optional[float] = None
+    materiality_adjustment: Optional[float] = None
+    trend_bonus: Optional[float] = None
+    house_explanation: Optional[str] = None
+    house_score_v2: Optional[float] = None
+    materiality_weights: Dict[str, float] = Field(default_factory=dict)
+    evidence_count: Optional[int] = None
+    effective_date: Optional[str] = None
+    staleness_days: Optional[int] = None
+    score_delta: Optional[float] = None
 
 
 class PortfolioPosition(BaseModel):
@@ -129,16 +129,16 @@ class PortfolioPosition(BaseModel):
     score: float
     side: Literal["long", "short"]
     thesis: str
-    strategy_bucket: str | None = None
-    decision_score: float | None = None
-    regime_posture: str | None = None
-    size_multiplier: float | None = None
-    execution_tactic: str | None = None
-    execution_delay_seconds: int | None = None
-    expected_fill_probability: float | None = None
-    estimated_slippage_bps: float | None = None
-    estimated_impact_bps: float | None = None
-    alpha_engine: str | None = None
+    strategy_bucket: Optional[str] = None
+    decision_score: Optional[float] = None
+    regime_posture: Optional[str] = None
+    size_multiplier: Optional[float] = None
+    execution_tactic: Optional[str] = None
+    execution_delay_seconds: Optional[int] = None
+    expected_fill_probability: Optional[float] = None
+    estimated_slippage_bps: Optional[float] = None
+    estimated_impact_bps: Optional[float] = None
+    alpha_engine: Optional[str] = None
 
 
 class PortfolioSummary(BaseModel):
@@ -149,8 +149,8 @@ class PortfolioSummary(BaseModel):
     net_exposure: float
     turnover_estimate: float
     expected_alpha: float
-    positions: list[PortfolioPosition] = Field(default_factory=list)
-    constraints: dict[str, float | str] = Field(default_factory=dict)
+    positions: List[PortfolioPosition] = Field(default_factory=list)
+    constraints: Dict[str, Union[float, str]] = Field(default_factory=dict)
 
 
 class BacktestPoint(BaseModel):
@@ -188,14 +188,14 @@ class BacktestResult(BaseModel):
     period_start: str
     period_end: str
     metrics: BacktestMetrics
-    positions: list[PortfolioPosition] = Field(default_factory=list)
-    timeline: list[BacktestPoint] = Field(default_factory=list)
-    risk_alerts: list[RiskAlert] = Field(default_factory=list)
-    experiment_tags: list[str] = Field(default_factory=list)
+    positions: List[PortfolioPosition] = Field(default_factory=list)
+    timeline: List[BacktestPoint] = Field(default_factory=list)
+    risk_alerts: List[RiskAlert] = Field(default_factory=list)
+    experiment_tags: List[str] = Field(default_factory=list)
     data_source: str = "synthetic fallback"
-    data_source_chain: list[str] = Field(default_factory=list)
+    data_source_chain: List[str] = Field(default_factory=list)
     used_synthetic_fallback: bool = True
-    market_data_warnings: list[str] = Field(default_factory=list)
+    market_data_warnings: List[str] = Field(default_factory=list)
 
 
 class ExecutionOrder(BaseModel):
@@ -208,19 +208,19 @@ class ExecutionOrder(BaseModel):
     rationale: str
     order_type: str = "market"
     time_in_force: str = "day"
-    notional: float | None = None
+    notional: Optional[float] = None
     status: str = "planned"
-    broker_order_id: str | None = None
-    client_order_id: str | None = None
-    submitted_at: str | None = None
-    filled_qty: str | None = None
-    filled_avg_price: str | None = None
-    expected_fill_probability: float | None = None
-    estimated_slippage_bps: float | None = None
-    estimated_impact_bps: float | None = None
-    execution_tactic: str | None = None
-    execution_delay_seconds: int | None = None
-    canary_bucket: str | None = None
+    broker_order_id: Optional[str] = None
+    client_order_id: Optional[str] = None
+    submitted_at: Optional[str] = None
+    filled_qty: Optional[str] = None
+    filled_avg_price: Optional[str] = None
+    expected_fill_probability: Optional[float] = None
+    estimated_slippage_bps: Optional[float] = None
+    estimated_impact_bps: Optional[float] = None
+    execution_tactic: Optional[str] = None
+    execution_delay_seconds: Optional[int] = None
+    canary_bucket: Optional[str] = None
 
 
 class ExecutionPlan(BaseModel):
@@ -229,13 +229,13 @@ class ExecutionPlan(BaseModel):
     mode: Literal["paper", "live"]
     ready: bool
     estimated_slippage_bps: float
-    compliance_checks: list[str] = Field(default_factory=list)
-    orders: list[ExecutionOrder] = Field(default_factory=list)
+    compliance_checks: List[str] = Field(default_factory=list)
+    orders: List[ExecutionOrder] = Field(default_factory=list)
     submitted: bool = False
     broker_status: str = "planned"
-    warnings: list[str] = Field(default_factory=list)
-    account_snapshot: dict[str, str | bool | None] = Field(default_factory=dict)
-    broker_connection: dict[str, str | bool | None] = Field(default_factory=dict)
+    warnings: List[str] = Field(default_factory=list)
+    account_snapshot: Dict[str, Union[str, bool, None]] = Field(default_factory=dict)
+    broker_connection: Dict[str, Union[str, bool, None]] = Field(default_factory=dict)
 
 
 class BrokerDescriptor(BaseModel):
@@ -245,9 +245,9 @@ class BrokerDescriptor(BaseModel):
     configured: bool
     live_supported: bool
     paper_supported: bool
-    capabilities: list[str] = Field(default_factory=list)
-    auth_hints: list[str] = Field(default_factory=list)
-    metadata: dict[str, str | bool | None] = Field(default_factory=dict)
+    capabilities: List[str] = Field(default_factory=list)
+    auth_hints: List[str] = Field(default_factory=list)
+    metadata: Dict[str, Union[str, bool, None]] = Field(default_factory=dict)
 
 
 class OrderLifecycleEvent(BaseModel):
@@ -269,9 +269,9 @@ class OrderLifecycleRecord(BaseModel):
     current_state: str
     retry_count: int = 0
     cancel_requested: bool = False
-    submitted_payload: dict[str, Any] = Field(default_factory=dict)
-    last_broker_snapshot: dict[str, Any] = Field(default_factory=dict)
-    events: list[OrderLifecycleEvent] = Field(default_factory=list)
+    submitted_payload: Dict[str, Any] = Field(default_factory=dict)
+    last_broker_snapshot: Dict[str, Any] = Field(default_factory=dict)
+    events: List[OrderLifecycleEvent] = Field(default_factory=list)
 
 
 class ExecutionJournal(BaseModel):
@@ -281,10 +281,10 @@ class ExecutionJournal(BaseModel):
     current_state: str
     created_at: str
     updated_at: str
-    allowed_actions: list[str] = Field(default_factory=list)
-    risk_summary: list[str] = Field(default_factory=list)
-    records: list[OrderLifecycleRecord] = Field(default_factory=list)
-    metrics: dict[str, str | float | bool | None] = Field(default_factory=dict)
+    allowed_actions: List[str] = Field(default_factory=list)
+    risk_summary: List[str] = Field(default_factory=list)
+    records: List[OrderLifecycleRecord] = Field(default_factory=list)
+    metrics: Dict[str, Union[str, float, bool, None]] = Field(default_factory=dict)
 
 
 class ValidationWindow(BaseModel):
@@ -295,10 +295,10 @@ class ValidationWindow(BaseModel):
     cumulative_return: float
     turnover_cost_drag: float
     max_drawdown: float
-    bucket: str | None = None
-    fill_probability: float | None = None
-    expected_slippage_bps: float | None = None
-    calibrated_confidence: float | None = None
+    bucket: Optional[str] = None
+    fill_probability: Optional[float] = None
+    expected_slippage_bps: Optional[float] = None
+    calibrated_confidence: Optional[float] = None
 
 
 class AlphaValidationReport(BaseModel):
@@ -306,7 +306,7 @@ class AlphaValidationReport(BaseModel):
     strategy_name: str
     benchmark: str
     generated_at: str
-    universe: list[str] = Field(default_factory=list)
+    universe: List[str] = Field(default_factory=list)
     in_sample_sharpe: float
     out_of_sample_sharpe: float
     out_of_sample_cumulative_return: float
@@ -316,10 +316,10 @@ class AlphaValidationReport(BaseModel):
     slippage_bps: float
     impact_cost_bps: float
     fill_probability: float = 0.0
-    walk_forward_windows: list[ValidationWindow] = Field(default_factory=list)
-    stratified_walk_forward: list[dict[str, Any]] = Field(default_factory=list)
-    calibration: dict[str, Any] = Field(default_factory=dict)
-    notes: list[str] = Field(default_factory=list)
+    walk_forward_windows: List[ValidationWindow] = Field(default_factory=list)
+    stratified_walk_forward: List[Dict[str, Any]] = Field(default_factory=list)
+    calibration: Dict[str, Any] = Field(default_factory=dict)
+    notes: List[str] = Field(default_factory=list)
 
 
 class ExperimentRun(BaseModel):
@@ -328,15 +328,15 @@ class ExperimentRun(BaseModel):
     created_at: str
     objective: str
     benchmark: str
-    metrics: dict[str, float | str]
-    tags: list[str] = Field(default_factory=list)
-    artifact_uri: str | None = None
+    metrics: Dict[str, Union[float, str]]
+    tags: List[str] = Field(default_factory=list)
+    artifact_uri: Optional[str] = None
 
 
 class TrainingPlan(BaseModel):
     target_environment: str
     adapter_strategy: str
-    dataset_sources: list[str]
+    dataset_sources: List[str]
     artifact_store: str
     remote_ready: bool
-    notes: list[str]
+    notes: List[str]

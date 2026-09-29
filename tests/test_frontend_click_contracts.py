@@ -337,7 +337,8 @@ def test_launcher_opens_root_and_verifies_quant_fingerprint():
     assert 'set "APP_URL=%API_URL%/"' in content
     assert "app_id -eq 'quant-terminal'" in content
     assert "service_name -eq 'Quant Terminal'" in content
-    assert "PORT_CANDIDATES=8000 8010 8011" in content
+    assert 'set "DEFAULT_PORT=1002"' in content
+    assert 'set "PORT_CANDIDATES=%DEFAULT_PORT%"' in content
 
 
 def test_critical_shell_and_workbench_files_do_not_contain_known_mojibake_fragments():
